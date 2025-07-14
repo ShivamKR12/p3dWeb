@@ -51,68 +51,44 @@ key_map = {"w": False, "s": False, "a": False, "d": False}
 for key in key_map:
     base.accept(key, lambda k=key: key_map.__setitem__(k, True))
     base.accept(f"{key}-up", lambda k=key: key_map.__setitem__(k, False))
-# fp_camera = base.render.attachNewNode("fp_camera")
-# fp_camera.setPos(base.cam.getPos())
-# fp_camera.setHpr(0, 0, 0)
-# base.cam.reparentTo(fp_camera)
-# base.cam.setPos(0, 0, 0)
-camera_node = base.render.attachNewNode("cameraNode")
-camera_node.setPos(0, -60, 10)
-base.cam.reparentTo(camera_node)
+fp_camera = base.render.attachNewNode("fp_camera")
+fp_camera.setPos(base.cam.getPos())
+fp_camera.setHpr(0, 0, 0)
+base.cam.reparentTo(fp_camera)
 base.cam.setPos(0, 0, 0)
-heading = 0
-pitch = 0
-sensitivity = 50.0
-# move_speed = 10
-speed = 10.0
+sensitivity = 0.2
+move_speed = 10
 def update_camera(task):
     global heading, pitch
     dt = globalClock.getDt()
     if base.mouseWatcherNode.hasMouse():
-    #     md = base.win.getPointer(0)
-    #     x = md.getX()
-    #     y = md.getY()
-    #     center_x = base.win.getXSize() // 2
-    #     center_y = base.win.getYSize() // 2
-    #     dx = x - center_x
-    #     dy = y - center_y
-    #     base.win.movePointer(0, center_x, center_y)
-    #     h = fp_camera.getH() - dx * sensitivity
-    #     p = fp_camera.getP() - dy * sensitivity
-    #     p = max(-89, min(89, p))  # Clamp pitch
-    #     fp_camera.setH(h)
-    #     fp_camera.setP(p)
-    # direction = Vec3(0, 0, 0)
-    # if key_map["w"]:
-    #     direction += Vec3(0, 1, 0)
-    # if key_map["s"]:
-    #     direction += Vec3(0, -1, 0)
-    # if key_map["a"]:
-    #     direction += Vec3(-1, 0, 0)
-    # if key_map["d"]:
-    #     direction += Vec3(1, 0, 0)
-    # if direction.lengthSquared() > 0:
-    #     direction.normalize()
-    #     movement = fp_camera.getQuat().xform(direction)
-    #     movement.setZ(0)
-    #     fp_camera.setPos(fp_camera.getPos() + movement * move_speed * dt)
-        mouse = base.mouseWatcherNode.getMouse()
-        dx = mouse.getX() * dt * sensitivity
-        dy = mouse.getY() * dt * sensitivity
-        heading -= dx * 100
-        pitch -= dy * 100
-        pitch = max(-90, min(90, pitch))
-        camera_node.setHpr(heading, pitch, 0)
-    move_vec = Vec3(0, 0, 0)
-    if key_map["w"]: move_vec.y += 1
-    if key_map["s"]: move_vec.y -= 1
-    if key_map["a"]: move_vec.x -= 1
-    if key_map["d"]: move_vec.x += 1
-    if move_vec.lengthSquared() > 0:
-        move_vec.normalize()
-        world_vec = camera_node.getQuat().xform(move_vec)
-        world_vec.setZ(0)
-        camera_node.setPos(camera_node.getPos() + world_vec * speed * dt)
+        md = base.win.getPointer(0)
+        x = md.getX()
+        y = md.getY()
+        center_x = base.win.getXSize() // 2
+        center_y = base.win.getYSize() // 2
+        dx = x - center_x
+        dy = y - center_y
+        base.win.movePointer(0, center_x, center_y)
+        h = fp_camera.getH() - dx * sensitivity
+        p = fp_camera.getP() - dy * sensitivity
+        p = max(-89, min(89, p))  # Clamp pitch
+        fp_camera.setH(h)
+        fp_camera.setP(p)
+    direction = Vec3(0, 0, 0)
+    if key_map["w"]:
+        direction += Vec3(0, 1, 0)
+    if key_map["s"]:
+        direction += Vec3(0, -1, 0)
+    if key_map["a"]:
+        direction += Vec3(-1, 0, 0)
+    if key_map["d"]:
+        direction += Vec3(1, 0, 0)
+    if direction.lengthSquared() > 0:
+        direction.normalize()
+        movement = fp_camera.getQuat().xform(direction)
+        movement.setZ(0)
+        fp_camera.setPos(fp_camera.getPos() + movement * move_speed * dt)
     return task.cont
 props = WindowProperties()
 props.setCursorHidden(True)
