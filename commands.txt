@@ -1,5 +1,0 @@
-venv\Scripts\Activate.ps1
-
-python -m pygbag --git --template noctx.tmpl --ume_block 0 main.py
-
-punzip models/(model-name)
