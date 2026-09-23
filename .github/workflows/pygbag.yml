@@ -1,6 +1,15 @@
 name: pygbag_build
 
-on: [workflow_dispatch]
+on:
+  push:
+    paths:
+      - '**.py'
+      - '**.spec'
+      - '**.ini'
+      - 'requirements.txt'
+      - 'setup.py'
+      - '.github/workflows/*.yml'
+  workflow_dispatch:
 
 permissions:
   contents: write
